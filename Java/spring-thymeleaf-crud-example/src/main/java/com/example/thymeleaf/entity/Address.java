@@ -3,12 +3,12 @@ package com.example.thymeleaf.entity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Getter
 @Setter
@@ -58,14 +58,21 @@ public class Address {
         return "Address{" +
                 "id='" + id + '\'' +
                 ", zipCode='" + zipCode + '\'' +
-                ", street='" + street + '\'' +
-                ", number='" + number + '\'' +
-                ", complement='" + complement + '\'' +
-                ", district='" + district + '\'' +
+                ", street='" + maskSensitiveData(street) + '\'' +
+                ", number='" + maskSensitiveData(number) + '\'' +
+                ", complement='" + maskSensitiveData(complement) + '\'' +
+                ", district='" + maskSensitiveData(district) + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    private String maskSensitiveData(String sensitiveData) {
+        if (sensitiveData == null || sensitiveData.isEmpty()) {
+            return sensitiveData;
+        }
+        return "*".repeat(sensitiveData.length());
     }
 }
